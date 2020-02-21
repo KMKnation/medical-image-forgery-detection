@@ -1,0 +1,9 @@
+/.idea/
+/__pycache__/
+/venv
+/.ipynb_checkpoints
+/dataset
+/dataset_
+/models/casia-I/new_model.h5
+/models/casia-II/casia2_model.h5
+
