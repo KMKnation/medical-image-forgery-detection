@@ -204,8 +204,8 @@ new_model.compile(loss='binary_crossentropy',
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import LearningRateScheduler
-batch_size = 32
-num_epochs = 100
+batch_size = 16
+num_epochs = 50
 # input_shape = (224, 224, 3)
 validation_split = .2
 verbose = 1
