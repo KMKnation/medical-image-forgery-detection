@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[23]:
 
 
 import numpy as np
@@ -23,7 +23,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# In[2]:
+# In[24]:
 
 
 def weiner_noise_reduction(img):
@@ -63,7 +63,7 @@ def preprocess_image(image):
     return colored
 
 
-# In[3]:
+# In[25]:
 
 
 import keras
@@ -79,20 +79,20 @@ from sklearn.model_selection import train_test_split
 import config
 
 
-# In[4]:
+# In[26]:
 
 
 DDSM_DATASET = 'CDDSM/figment.csee.usf.edu/pub/DDSM/cases'
 
 
-# In[5]:
+# In[27]:
 
 
 NORMAL = os.path.join(DDSM_DATASET, 'normals')
 ABNORMAL = os.path.join(DDSM_DATASET, 'cancers')
 
 
-# In[6]:
+# In[28]:
 
 
 import glob
@@ -101,13 +101,25 @@ normalGlob = glob.glob(NORMAL+"/*/*/*.jpg")
 abNormalGlob = glob.glob(ABNORMAL+"/*/*/*.jpg")
 
 
-# In[7]:
+# In[29]:
+
+
+print(len(normalGlob))
+
+
+# In[30]:
+
+
+print(len(abNormalGlob))
+
+
+# In[31]:
 
 
 normalGlob[:2]
 
 
-# In[20]:
+# In[32]:
 
 
 def data_generator(normalGlob, abNormalGlob, BATCH_SIZE):
@@ -127,17 +139,17 @@ def data_generator(normalGlob, abNormalGlob, BATCH_SIZE):
 
         for imagepath in normalGlob[:NORMAL_RATIO]:
             image = cv2.imread(imagepath)
-        #     image = preprocess_image(image)
             image = cv2.resize(image, (img_width, img_height))
-            image = image / 255
+            image = preprocess_image(image)
+#             image = image / 255
             images.append(image)
             labels.append(0)
 
         for imagepath in normalGlob[:ABNORMAL_RATIO]:
             image = cv2.imread(imagepath)
-        #     image = preprocess_image(image)
             image = cv2.resize(image, (img_width, img_height))
-            image = image / 255
+            image = preprocess_image(image)
+#             image = image / 255
             images.append(image)
             labels.append(1)
 
@@ -150,13 +162,13 @@ def data_generator(normalGlob, abNormalGlob, BATCH_SIZE):
         yield np.array(images), np.array(labels)
 
 
-# In[21]:
+# In[33]:
 
 
 data_generator(normalGlob, abNormalGlob, 2)
 
 
-# In[10]:
+# In[34]:
 
 
 img_height = 256
@@ -204,8 +216,8 @@ new_model.compile(loss='binary_crossentropy',
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import LearningRateScheduler
-batch_size = 16
-num_epochs = 50
+batch_size = 32
+num_epochs = 100
 # input_shape = (224, 224, 3)
 validation_split = .2
 verbose = 1
@@ -227,9 +239,9 @@ callback = LearningRateScheduler(scheduler)
 # In[ ]:
 
 
-hist = new_model.fit_generator(steps_per_epoch=20,generator=data_generator(normalGlob, abNormalGlob, batch_size)
-                           , validation_data=data_generator(normalGlob, abNormalGlob, batch_size)
-                           , validation_steps=40,epochs=20,callbacks=[callback, checkpoint, early])
+hist = new_model.fit_generator(steps_per_epoch=num_epochs // batch_size,generator=data_generator(normalGlob, abNormalGlob, batch_size)
+                           , validation_data=data_generator(normalGlob, abNormalGlob, 12)
+                           , validation_steps=num_epochs // batch_size,epochs=num_epochs,callbacks=[callback, checkpoint, early])
 
 
 # In[ ]:
