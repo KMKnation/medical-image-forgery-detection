@@ -9,6 +9,9 @@ from skimage.filters import median
 import config
 import imutils
 
+img_height = 256
+img_width = 384
+
 def weiner_noise_reduction(img):
     # data.astronaut()
     img = color.rgb2gray(img)
@@ -45,126 +48,57 @@ def preprocess_image(image):
     return colored
 
 
-'''
-CASIA 1 database contains 800 authentic andh
-921 forged images.
 
-the size
-is 384  256 pixels.
+DDSM_DATASET = 'CDDSM/figment.csee.usf.edu/pub/DDSM/cases'
 
-'''
 
-CASIA_ONE_AUTHENTIC_PATH = 'casia-dataset/CASIA1/Au/'
-CASIA_ONE_FORGED_PATH = 'casia-dataset/CASIA1/Sp/'
+# In[27]:
 
-'''
-The CASIA 2 database
-contains more than 7400 authentic and 5000
-forged images. The images are in either JPEG,
-TIFF, or BMP format.
 
-'''
+NORMAL = os.path.join(DDSM_DATASET, 'normals')
+ABNORMAL = os.path.join(DDSM_DATASET, 'cancers')
 
-CASIA_TWO_AUTHENTIC_PATH = 'casia-dataset/CASIA2/Au/'
-CASIA_TWO_FORGED_PATH = 'casia-dataset/CASIA2/Tp/'
+
+# In[28]:
+
+
+import glob
+import random
+normalGlob = glob.glob(NORMAL+"/*/*/*.jpg")
+abNormalGlob = glob.glob(ABNORMAL+"/*/*/*.jpg")
 
 
 # new_num_arr = np.load('dataset/np_casia_one_au.npy') # load
 
-def prepare_casia_one_dataset():
+def prepare_ddsm_dataset():
     casia_one_au_arr = []
     casia_one_forged_arr = []
 
     # np.save('data.npy', num_arr) # save
-    for image in os.listdir(CASIA_ONE_AUTHENTIC_PATH):
-        imagepath = os.path.join(CASIA_ONE_AUTHENTIC_PATH, image)
+    for imagepath in normalGlob:
+#         imagepath = os.path.join(CASIA_ONE_AUTHENTIC_PATH, image)
         cv_image = cv2.imread(imagepath)
-        print(str(image) + 'processing...')
-        h, w = cv_image.shape[:2]
-        if h != 256 and w != 384:
-            continue
-            # cv_image = imutils.resize(cv_image, width=384, height=256)
-        if h == 256 and w == 384:
-            processed_image = preprocess_image(cv_image)
-            casia_one_au_arr.append(np.array(processed_image))
-        else:
-            print('Dimention mismatch')
+        cv_image = cv2.resize(cv_image, (img_width, img_height))
+        print(str(imagepath) + 'processing...')
+        processed_image = preprocess_image(cv_image)
+        casia_one_au_arr.append(np.array(processed_image))
 
     np_casia_one_au = np.array(casia_one_au_arr)
-    np.save('dataset/np_casia_one_au.npy', np_casia_one_au)  # save
-    print('CASIA1 Authentic Data Processed..')
+    np.save('CDDSM/np_ddsm_normal.npy', np_casia_one_au)  # save
+    print('DDSM Authentic Data Processed..')
     gc.collect()
 
-    for image in os.listdir(CASIA_ONE_FORGED_PATH):
-        imagepath = os.path.join(CASIA_ONE_FORGED_PATH, image)
+    for imagepath in abNormalGlob:
         cv_image = cv2.imread(imagepath)
-        print(str(image) + 'processing...')
-        h, w = cv_image.shape[:2]
-        if h != 256 and w != 384:
-            continue
-            # cv_image = imutils.resize(cv_image, width=384, height=256)
-        if h == 256 and w == 384:
-            processed_image = preprocess_image(cv_image)
-            casia_one_forged_arr.append(np.array(processed_image))
-        else:
-            print('Dimention mismatch')
+        cv_image = cv2.imread(imagepath)
+        cv_image = cv2.resize(cv_image, (img_width, img_height))
+        print(str(imagepath) + 'processing...')
+        processed_image = preprocess_image(cv_image)
+        casia_one_forged_arr.append(np.array(processed_image))
 
     np_casia_one_forged = np.array(casia_one_forged_arr)
-    np.save('dataset/np_casia_one_forged.npy', np_casia_one_forged)  # save
-    print('CASIA1 Forged Data Processed..')
+    np.save('CDDSM/np_ddsm_abnormal.npy', np_casia_one_forged)  # save
+    print('DDSM Forged Data Processed..')
     gc.collect()
 
-
-def prepare_casia_two_dataset():
-    casia_two_au_arr = []
-    casia_two_forged_arr = []
-
-    # np.save('data.npy', num_arr) # save
-    for image in os.listdir(CASIA_TWO_AUTHENTIC_PATH):
-        imagepath = os.path.join(CASIA_TWO_AUTHENTIC_PATH, image)
-        cv_image = cv2.imread(imagepath)
-        try:
-            print(str(image) + 'processing...')
-            h, w = cv_image.shape[:2]
-            if h != 256 and w != 384:
-                continue
-                # cv_image = imutils.resize(cv_image, width=384, height=256)
-            if h == 256 and w == 384:
-                processed_image = preprocess_image(cv_image)
-                casia_two_au_arr.append(np.array(processed_image))
-            else:
-                print('Dimention mismatch')
-        except Exception as err:
-            print(err)
-
-    np_casia_two_au = np.array(casia_two_au_arr)
-    np.save('dataset/np_casia_two_au.npy', np_casia_two_au)  # save
-    print('CASIA2 Authentic Data Processed..')
-    gc.collect()
-
-    for image in os.listdir(CASIA_TWO_FORGED_PATH):
-        imagepath = os.path.join(CASIA_TWO_FORGED_PATH, image)
-        cv_image = cv2.imread(imagepath)
-        try:
-            print(str(image) + 'processing...')
-            h, w = cv_image.shape[:2]
-            if h != 256 and w != 384:
-                continue
-                # cv_image = imutils.resize(cv_image, width=384, height=256)
-            if h == 256 and w == 384:
-                processed_image = preprocess_image(cv_image)
-                casia_two_forged_arr.append(np.array(processed_image))
-            else:
-                print('Dimention mismatch')
-        except Exception as err:
-            print(err)
-
-
-    np_casia_two_forged = np.array(casia_two_forged_arr)
-    np.save('dataset/np_casia_two_forged.npy', np_casia_two_forged)  # save
-    print('CASIA2 Forged Data Processed..')
-    gc.collect()
-
-
-prepare_casia_one_dataset()
-prepare_casia_two_dataset()
+prepare_ddsm_dataset()
