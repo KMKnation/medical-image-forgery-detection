@@ -201,7 +201,12 @@ new_model.add(top_model) # now this works
 
 
 # In[13]:
+for layer in new_model.layers[:15]:
+    layer.trainable = False
 
+print('Model loaded.')
+
+print(new_model.summary())
 
 # model_aug.load_weights('99 % accurate model.h5')
 # compile the model with a SGD/momentum optimizer
@@ -216,8 +221,8 @@ new_model.compile(loss='binary_crossentropy',
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.callbacks import LearningRateScheduler
-batch_size = 32
-num_epochs = 100
+batch_size = 16
+num_epochs = 50
 # input_shape = (224, 224, 3)
 validation_split = .2
 verbose = 1
