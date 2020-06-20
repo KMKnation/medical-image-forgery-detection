@@ -15,4 +15,5 @@ The rapid growth of new communication techniques and abilities, new services and
 Soon..
 
 <B>Accuracies</B>: 
+
 ![Accuracy-Comparision](./screenshots/Figure_1.png)
