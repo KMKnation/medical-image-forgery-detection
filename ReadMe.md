@@ -11,3 +11,8 @@ The rapid growth of new communication techniques and abilities, new services and
 1. CASIA - https://www.kaggle.com/sophatvathana/casia-dataset
 2. DDSM - https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM
 
+<B>Setup Instruction</B>: 
+Soon..
+
+<B>Accuracies</B>: 
+![Accuracy-Comparision](./screenshots/Figure_1.png)
