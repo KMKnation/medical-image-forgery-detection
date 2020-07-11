@@ -23,7 +23,6 @@ def weiner_noise_reduction(img):
 
     return deconvolved_img
 
-
 def estimate_noise(img):
     # img = cv2.imread(image_path)
     return estimate_sigma(img, multichannel=True, average_sigmas=True)
@@ -40,35 +39,19 @@ def preprocess_image(image):
     filtered_img = median(fingerprint, selem=None, out=None, mask=None, shift_x=False,
                           shift_y=False, mode='nearest', cval=0.0, behavior='rank')
     colored = cv2.cvtColor(filtered_img, cv2.COLOR_GRAY2BGR)
-    # print('-----------------')
-    # cv2.imshow('filtered_image', filtered_img)
-    # colored = cv2.cvtColor(filtered_img, cv2.COLOR_GRAY2BGR)
-    # print(colored)
-    # cv2.imshow('colored', colored)
-    return colored
 
+    return colored
 
 
 DDSM_DATASET = 'CDDSM/figment.csee.usf.edu/pub/DDSM/cases'
 
-
-# In[27]:
-
-
 NORMAL = os.path.join(DDSM_DATASET, 'normals')
 ABNORMAL = os.path.join(DDSM_DATASET, 'cancers')
-
-
-# In[28]:
-
 
 import glob
 import random
 normalGlob = glob.glob(NORMAL+"/*/*/*.jpg")
 abNormalGlob = glob.glob(ABNORMAL+"/*/*/*.jpg")
-
-
-# new_num_arr = np.load('dataset/np_casia_one_au.npy') # load
 
 def prepare_ddsm_dataset():
     casia_one_au_arr = []
