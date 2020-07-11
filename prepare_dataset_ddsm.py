@@ -20,7 +20,6 @@ def weiner_noise_reduction(img):
 
     return deconvolved_img
 
-
 def estimate_noise(img):
     # img = cv2.imread(image_path)
     return estimate_sigma(img, multichannel=True, average_sigmas=True)
@@ -37,11 +36,7 @@ def preprocess_image(image):
     filtered_img = median(fingerprint, selem=None, out=None, mask=None, shift_x=False,
                           shift_y=False, mode='nearest', cval=0.0, behavior='rank')
     colored = cv2.cvtColor(filtered_img, cv2.COLOR_GRAY2BGR)
-    # print('-----------------')
-    # cv2.imshow('filtered_image', filtered_img)
-    # colored = cv2.cvtColor(filtered_img, cv2.COLOR_GRAY2BGR)
-    # print(colored)
-    # cv2.imshow('colored', colored)
+    
     return colored
 
 

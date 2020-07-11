@@ -20,11 +20,8 @@ def estimate_noise(img):
     # img = cv2.imread(image_path)
     return estimate_sigma(img, multichannel=True, average_sigmas=True)
 
-
 # image = cv2.imread('00000017_001_small.png')
 image = cv2.imread('00000017_001_small.png')
-
-
 
 '''
 Step 1: If the image is a color image, decompose
@@ -49,7 +46,6 @@ is an image (or component) free from noise.
 
 noise_free_image = weiner_noise_reduction(image)
 cv2.imshow('noise_free_image', noise_free_image)
-
 
 '''
 
@@ -78,7 +74,6 @@ def sp_noise(image,prob):
             else:
                 output[i][j] = image[i][j]
     return output
-
 
 noise_img = sp_noise(image,0.05)
 cv2.imshow('noise_img', noise_img)

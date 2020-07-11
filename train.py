@@ -8,10 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
-
 import config
-
-
 
 XAuthenticate = list(np.load(config.np_casia_two_au_path))
 yAuthenticate = list(np.zeros(len(XAuthenticate), dtype=np.uint8))
@@ -41,7 +38,6 @@ top_model.add(Dropout(0.5))
 top_model.add(Dense(1, activation='sigmoid'))
 # add the model on top of the convolutional base
 
-
 # model.add(top_model) this throws error alternative is below
 
 new_model = Sequential() #new model
@@ -60,14 +56,12 @@ print('Model loaded.')
 
 print(new_model.summary())
 
-
 # model_aug.load_weights('k64 binary 25percent stride8/fine_tuned_model_resnet_64_adam_weights.h5')
 # compile the model with a SGD/momentum optimizer
 # and a very slow learning rate.
 new_model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
-
 
 new_model.fit(x_train, y_train,
           epochs=100,
