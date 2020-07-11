@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import requests
 
 def download_file_from_google_drive(id, destination):
@@ -34,9 +31,6 @@ def save_response_content(response, destination):
         for chunk in response.iter_content(CHUNK_SIZE):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
-
-
-# In[3]:
 
 
 import os
