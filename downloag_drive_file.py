@@ -32,19 +32,11 @@ def save_response_content(response, destination):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
 
-
 import os
-
-
-# In[5]:
-
 
 file_id = '1KeAmrtuag3MpPqs7XrxUtxnfewnVUo0D'
 destination = os.path.join(os.getcwd(), 'forgerydetection.zip')
 download_file_from_google_drive(file_id, destination)
-
-
-# In[ ]:
 
 
 
