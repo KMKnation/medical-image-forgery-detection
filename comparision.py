@@ -4,9 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Generate dummy data into a dataframe
-# j = {x: [random.choice(["CASIA-I", "CASIA-II", "DDSM"]
-#                        ) for j in range(300)] for x in s}
+
 j = {
     "CNN": [99.4,98.1,99.92],
     "SVM": [98.8,98.9,84.3]
